@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="firstDemo">
+<head>
+	<meta charset="utf-8" />
+	<title>第一个angular应用</title>
+</head>
+<body>
+
+	<div class="container" ng-controller="firstController as vm">
+		<input type="text" name="name" value="{{vm.name}}" />
+		<input type="text" name="name" ng-model="vm.text" />
+		<h3>{{vm.text}}</h3>
+		<span>时钟：</span><span>{{vm.clock.now}}</span>
+		<br />
+		<button type="button" ng-click="vm.runTime();">触发时间</button>
+		<button type="button" ng-click="vm.stopTime();">停止时间</button>
+	</div>
+
+	<script type="text/javascript" src="./js/angular/angular.js"></script>
+	<script type="text/javascript">
+		(function () {
+			angular.module("firstDemo", ["ng"])
+				.controller("firstController", ["$scope", "$timeout", function ($scope, $timeout) {
+					var vm = this;
+					vm.name = "先可思";
+					vm.text = "hello world";
+					vm.timer = null;
+					console.log(vm.text);
+					// function updateClock() {
+					// 	var seconds = new Date().getSeconds();
+					// 	vm.clock = seconds < 10 ? "0" + seconds : seconds;
+					// 	$timeout(function () {
+					// 		updateClock();
+					// 	}, 1000);
+					// }
+
+					vm.runTime = function () {
+						updateClock();
+					}
+
+					vm.stopTime = function () {
+						clearInterval(vm.timer);
+					}
+
+					function updateClock() {
+						vm.clock = {
+							now: new Date().getSeconds()
+						};
+
+						function updateTime() {
+							var clock = new Date().getSeconds();
+							vm.clock.now = clock < 10 ? "0" + clock : clock;
+						}
+
+						vm.timer = setInterval(function () {
+							$scope.$apply(updateTime);
+						}, 1000);
+
+					}
+
+					// updateClock();
+				}])
+				.run(["$rootScope", function ($rootScope) {
+					$rootScope.name = "keewer.kang";
+					console.log($rootScope.name);
+				}])
+				.config(["$provide", function ($provide) {
+					//配置日志对象
+					$provide.decorator("$log", function ($delegate) {
+						return $delegate;
+					})
+				}])
+				.config(["$logProvider", function ($logProvider) {
+					//配置获取日志对象
+					var $log = $logProvider.$get();
+					$log.log("config");
+				}])
+		})();
+	</script>
+</body>
+</html>

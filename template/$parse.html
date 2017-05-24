@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>$parse</title>
+</head>
+<body>
+
+	<div class="container" ng-controller="appController">
+		<input type="text" name="name" ng-model="expression" />
+		<span>{{parseValue}}</span>
+	</div>
+	<script type="text/javascript" src="../js/angular/angular.js"></script>
+	<script type="text/javascript">
+		(function () {
+			angular.module("app", ["ng"])
+				.controller("appController", ["$scope", "$parse", function ($scope, $parse) {
+					$scope.expression = "mozilla";
+					$scope.$watch("expression", function (newVal, oldVal, scope) {
+						//scope是在当前的上下文环境
+						console.log("newVal ==> ", newVal);
+						console.log("oldVal ==> ", oldVal);
+						if (newVal !== oldVal) {
+							var parseFun = $parse("expression");
+							$scope.parseValue = parseFun(scope);
+							console.log($scope.parseValue);
+						}
+					});
+				}])
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>$interpolateProvider</title>
+</head>
+<body>
+<div class="container" ng-controller="appController">
+	<h2>__name__</h2>
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.config(["$interpolateProvider", function ($interpolateProvider) {
+					$interpolateProvider.startSymbol("__");
+					$interpolateProvider.endSymbol("__");
+			}])
+			.controller("appController", ["$scope", function ($scope) {
+				$scope.name = "斩钢式";
+			}])
+	})();
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>$filter</title>
+</head>
+<body>
+<div class="container" ng-controller="appController">
+	<h3>{{name | lowercase | capitalize}}</h3>
+	<h2>{{nickname}}</h2>
+	<p>{{12.6688 | number:2}}</p>  <!-- 12.67 -->
+	<p>{{155 | currency}}</p>
+	<p>{{120 | currency: "￥"}}</p>
+	<p>{{today | date: "yyyy-MM-dd hh:mm:ss.sss"}}</p>
+	<p>{{fruit | filter: "果":false}}</p>
+	<p>{{ids | filter: {"technology": "javascript"} }}</p> <!-- 注意后面的花括号需要空格 -->
+	<p>{{nums | json}}</p>
+	<p>{{str | limitTo: 3 : 1}}</p> <!-- 从下标为1开始截取3个字符 -->
+	<p>{{A | orderBy:"name":true}}</p>  <!-- true: 逆序 -->
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.controller("appController", ["$scope", "$filter", function ($scope, $filter) {
+				$scope.today = new Date();
+				$scope.name = "SHANKERS";
+				$scope.nickname = $filter("uppercase")("Ari");
+				$scope.fruit = ["黑布林", "芒果", "蛇果", "香梨"];
+				var names = ["kevin", "keewer", "ronnie", "mark", "jerry"];
+				$scope.arr = $filter("filter")(names, "n");
+				console.log($scope.arr);
+
+				$scope.ids = [
+					{"name": "k", "age": 12, "technology": "javascript"},
+					{"name": "m", "age": 16, "technology": "jquery"}
+				]
+
+				var testIds = $filter("filter")($scope.ids, {"technology": "jquery"}, false);
+				console.log("testIds ==> ", testIds);
+
+				$scope.nums = [{num1: "one", num2: "two", num3: "three", num4: "four"}];
+				var nums = $filter("json")($scope.nums);
+				console.log("nums ==> ", nums);
+
+				//截取字符串
+				$scope.str = "hello world";
+				var str = $filter("limitTo")($scope.str, 4, 1);  //从下标为1开始截取4个字符
+				console.log(str);
+
+				//对数组某个字段排序
+				$scope.A = [
+					{"name": "B2", "status": "sleep"},
+					{"name": "B1", "status": "getup"},
+					{"name": "B3", "status": "game"}
+				];
+
+				var a = $filter("orderBy")($scope.A, "name", true); //true: 降序, false: 升序
+				console.log("a ==> ", a);
+
+			}])
+			.filter("capitalize", [function () { //自定义过滤器
+				return function (input) {
+					if (input) {
+						return input[0].toUpperCase() + input.slice(1);
+					}
+				}
+			}])
+	})();
+</script>
+</body>
+</html>
