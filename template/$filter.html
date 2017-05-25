@@ -34,7 +34,7 @@
 				$scope.ids = [
 					{"name": "k", "age": 12, "technology": "javascript"},
 					{"name": "m", "age": 16, "technology": "jquery"}
-				]
+				];
 
 				var testIds = $filter("filter")($scope.ids, {"technology": "jquery"}, false);
 				console.log("testIds ==> ", testIds);

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>ng</title>
+	<style type="text/css">
+		.box{
+			color: #e4393c;
+		}
+
+		.weight{
+			font-weight: bold;
+		}
+
+		.unweight{
+			font-weight: normal;
+		}
+
+		.A{
+			color: #00f;
+		}
+
+		.B{
+			font-style: italic;
+		}
+
+		.C{
+			font-size: 20px;
+		}
+
+		.bg{
+			background-color: #e4393c;
+		}
+		.unbg{
+			background-color: #000;
+		}
+	</style>
+</head>
+<body>
+	<div class="container" ng-controller="appController">
+		<h1 ng-init="name='keewer'" ng-cloak class="{{addName}}" ng-style="{'background-color':'{{isBg}}'}">{{name}}</h1>
+		<p><span ng-bind="age" ng-class="{'A':isA,'B':isB,'C':isC}"></span></p>
+		<p><a ng-href="{{url}}" ng-class="{true:'weight',false:'unweight'}[isWeight]">点我</a></p>
+		<p class="{{isA?'A':'C'}}">我一定要买一部车</p>
+		<p><img ng-src="{{imgUrl}}"></p>
+		<p><input type="text" name="name" ng-disabled="{{isDisabled===199?false:true}}" /></p>
+		<p><input type="checkbox" name="check" ng-checked="{{isChecked}}" /></p>
+		<p><input type="text" name="name" ng-readonly="isReadonly" /></p>
+		<div>
+			<select ng-model="sel">
+				<option value="m" ng-selected="sel==='m'">芒果</option>
+				<option value="n" ng-selected="sel==='n'">牛先生</option>
+			</select>
+		</div>
+		<div>
+			<!-- <select ng-model="defaultCity" ng-options="city.name for city in cities"></select> -->
+			<!-- <select ng-model="defaultCity" ng-options="city.name group by city.country for city in cities">
+			</select> -->
+			<select ng-change="change(defaultCity);" ng-model="defaultCity" ng-options="city.code as city.name group by city.country for city in cities">
+				<option value="">请选择</option>
+			</select>
+		</div>
+		<div ng-bind-html="ele"></div>
+		<div ng-bind-template="{{hobby}} {{tech}}"></div>
+		<div>
+			<input type="text" name="name" ng-model="code" />
+		</div>
+		<div ng-switch="code">
+			<p ng-switch-when="C101">{{code + 1}}</p>
+			<p ng-switch-when="C122">{{code + 2}}</p>
+			<p ng-switch-default>{{code + 3}}</p>
+		</div>
+		<div>
+			<ul>
+				<li ng-repeat="item in fruit">{{item + $index + $first}}</li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript" src="../js/angular/angular.js"></script>
+	<script type="text/javascript" src="../js/angular/angular-sanitize.js"></script>
+	<script type="text/javascript">
+		(function () {
+			angular.module("app", ["ng", "ngSanitize"]).
+			controller("appController", ["$scope", function ($scope) {
+				$scope.age = 20;
+				$scope.url = "https://baidu.com";
+				$scope.imgUrl = "../img/tmall_08.png";
+				$scope.isDisabled = 200;
+				$scope.isChecked = true;
+				$scope.isReadonly = true;
+				$scope.sel = "n";
+
+				$scope.cities = [
+					{name: "北京", code: "C101", country: "中国"},
+					{name: "杭州", code: "C122", country: "中国"},
+					{name: "广州", code: "C188", country: "中国"}
+				];
+				$scope.defaultCity = $scope.cities[1];
+
+				$scope.change = function (item) {
+					console.log(item);
+				}
+
+				//ng-class
+				$scope.addName = "box";
+				$scope.isWeight = false;
+				$scope.isA = true;
+				$scope.isB = false;
+				$scope.isC = true;
+
+				//ng-style
+				$scope.isBg = "#efefef";
+
+				//ng-bind-html
+				$scope.ele = '<b><span>我是html</span></b>';
+
+				//ng-bind-template : html无效
+				$scope.hobby = "sleep";
+				$scope.tech = "javascipt";
+
+				//ng-if,ng-show,ng-hide
+
+				//ng-switch、ng-switch-when、ng-switch-default
+				$scope.code = "C122";
+
+				//ng-repeat
+				$scope.fruit = ["黑布林", "芒果", "蛇果", "车厘子"];
+
+				//ng-form
+
+				//ng-include
+				//ng-view
+
+			}])
+			
+		})();
+	</script>
+</body>
+</html>

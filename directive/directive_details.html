@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>directive details</title>
+</head>
+<body>
+
+<div ng-controller="windController">
+  out:<input type="text" ng-model="to" />
+  <div my-directive-other>
+  	<my-directive-one ng-hide="isHide" on-close="hideDialog();" my-car="{{car}}" title="{{title}}" my-to="to">
+  		<h2>check out the contents {{name}} {{title}}</h2>
+  	</my-directive-one>
+  </div>
+ </div>
+
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.controller("windController", ["$scope", "$timeout", function ($scope, $timeout) {
+				$scope.name = 'viko';
+				$scope.title = 'gecko';
+				$scope.to = "angular";
+				$scope.hideDialog = function () {
+					$scope.isHide = true;
+					$timeout(function () {
+						$scope.isHide = false;
+					}, 1000);
+				};
+			}])
+			.controller("otherController", ["$scope", function (ope) {
+				ope.car = "宝马";
+				return {car: ope.car};
+			}])
+			.directive("myDirectiveOther", [function () {
+				return {
+					restrict: 'A',
+					controller:'otherController'
+				};
+			}])
+			.directive("myDirectiveOne", [function () {
+				return {
+					restrict: 'EA', //约束指令的使用方式
+					require: '^myDirectiveOther',
+					scope: {
+						title: '@', //单向绑定策略
+						myCar:'@', //单向绑定策略
+						myTo: '=', //双向绑定策略
+						close: '&onClose', //传递方法
+					},
+					replace: true, //替换指令的元素
+					transclude: true, //复制指令内部的内容到含有ng-transclude的元素
+					terminal: false, //true: 停止执行比当前指令优先级的指令
+					priority: 0, //设置指令优先级, 优先级高的先执行
+					template: '<div class="alert">\
+							<a href ng-click="close();">&times;</a>\
+							<span>hello{{title}}{{vm.name}}</span>\
+							<div><input type="text" ng-model="myTo" /></div>\
+							<p>channel:{{myTo}}{{myCar}}</p>\
+							<div ng-transclude></div>\
+							</div>', //加载模板, templateUrl
+					controllerAs: "vm",
+					controller: function ($scope, $element, $attrs, $transclude, $log) {
+						$log.log(this.title);
+						$log.log($element);
+						$log.log($attrs);
+						$log.log($attrs.title);
+						$log.log($attrs.ngHide);
+						$transclude(function (clone) {
+							var a = angular.element('<a>'); //创建一个a元素
+							$log.log(a);
+							$log.log("keewer" + clone.text());
+							a.attr('href', clone.text());
+							a.text(clone.text());
+							$element.append(a);
+						});
+					},
+					link: function (scope, iElement, iAttrs, controller) {
+						if (!controller) return;
+						console.log(scope.title);
+						console.log('controller ==> ', controller);
+						console.log(scope.myCar);
+						console.log(iElement);
+						console.log(iAttrs.myCar);
+						console.log(iAttrs.title);
+					}, //如果有compile, 则忽略link
+					compile: function (tElement, tAttrs, transclude) {
+						//返回一个对象或者链接函数
+						// return {
+						// 	pre: function (scope, iElement, iAttrs, controller) {
+									//链接之前执行
+						// 		console.log(scope.title);
+
+						// 	},
+						// 	post: function (scope, iElement, iAttrs, controller) {
+									//链接之后执行
+						// 		console.log(scope.myCar);
+						// 	}
+						// };
+						//或者
+						return function (scope, ele, attrs) {
+							//链接函数
+							console.log(scope.title + "车子");
+						}
+					}
+
+				};
+			}])
+
+	})();
+</script>
+</body>
+</html>
