@@ -1,4 +1,4 @@
-- run() 在config()之后执行, 在controller()之前执行
+- run() 在config()之后执行, 在controller()之前执行, 是angular所有应用第一个执行的应用
 - $interval.cancel(timer)
 
 - dig google.com  观察DNS服务器的响应内容
@@ -85,9 +85,17 @@
 - angular-gestures
 - Hammer.js 触屏事件 373
 
--$cacheFactory 缓存 402
+- $cacheFactory 缓存 402
 
 - $http 自定义缓存 403
+
+- constant() 在config()之前执行
+
+- decorator() 可在原有的服务上添加属性和方法
+
+- $route.updateParams({name:"beast"}) 更新路由参数
+
+- $route.reload() 重新加载路由
 
 ```txt
 $interval(fn,delay,[count],[invokeApply],[Pass]);
@@ -127,4 +135,13 @@ Pass：函数的附加参数
 ```txt
 compile和link选项是互斥的
 如果同时设置了这两个选项，那么会把compile所返回的函数当作链接函数，而link选项本身则会被忽略
+```
+
+```txt
+验证用户登录 116
+```
+
+```txt
+value()方法和constant()方法之间最主要的区别是，常量可以注入到配置函数中，而值不行。
+通常情况下，可以通过value()来注册服务对象或函数，用constant()来配置数据。
 ```

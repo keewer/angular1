@@ -42,7 +42,7 @@
 			}])
 			.directive("myDirectiveOne", [function () {
 				return {
-					restrict: 'EA', //约束指令的使用方式
+					restrict: 'EA', //约束指令的使用方式, 默认是A
 					require: '^myDirectiveOther',
 					scope: {
 						title: '@', //单向绑定策略

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>run</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.run(["$rootScope", "AuthService", "$location", function ($rootScope, AuthService, $location) {
+				$rootScope.$on("$routeChangeStart", function (e, next, current) {
+					//如果登录未登录
+					if (!AuthService.userLogin) {
+						if (next.templateUrl === "login.html") {
+							//已经转向login页面,那么无需重定向
+						} else {
+							$location.path("/login");
+						}
+					}
+				})
+			}]);
+	})();
+</script>
+</body>
+</html>

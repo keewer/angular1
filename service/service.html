@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>service</title>
+</head>
+<body>
+<div class="container" ng-controller="serviceController">
+	<button ng-click="getName();">获取名称</button>
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.service("myService", ["$http", function ($http) {
+				this.getUserName = function () {
+					console.log("hello world");
+				}
+				return this;
+			}])
+			.controller("serviceController", ["$scope", "myService", function ($scope, myService) {
+				$scope.getName = function () {
+					myService.getUserName();
+				}
+			}])
+	})();
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>decorator</title>
+</head>
+<body>
+<div class="container" ng-controller="deController">
+	<button ng-click="getData();">获取数据</button>
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.factory("deFactory", [function () {
+				return {
+					getId: function () {
+						console.log("123");
+					}
+				};
+			}])
+			.config(["$provide", function ($provide) {
+				$provide.decorator("deFactory", ["$delegate", function ($delegate) {
+					$delegate.addData = function () {
+						console.log("mmmm");
+					}
+					return $delegate;
+				}])
+			}])
+			.controller("deController", ["$scope", "deFactory", function ($scope, deFactory) {
+				$scope.getData = function () {
+					deFactory.addData();
+				}
+			}])
+	})();
+</script>
+</body>
+</html>

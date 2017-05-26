@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>constant value</title>
+</head>
+<body>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.constant("c", "常量")
+			.config(["c", function (c) {
+				console.log(c);
+			}])
+			.value("v", "值")
+			.config(["v", function (v) {
+				console.log(v);
+			}])
+	})();
+</script>
+</body>
+</html>

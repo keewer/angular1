@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>route</title>
+</head>
+<body>
+<div ng-view></div>
+<!-- <base href="/"> -->
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript" src="../js/angular/angular-route.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng", "ngRoute"])
+			.config(["$routeProvider", "$locationProvider", function ($routeProvider, $locationProvider) {
+				// '/' : 路由路径
+				$routeProvider
+					.when("/home", {
+						templateUrl: "./views/home.html",
+						controller: "homeController",
+						controllerAs: "vm",
+						reloadOnSearch: false 
+						//如果reloadOnSearch选项被设置为true（默认），当$location.search()发生变化时会重新加载路由。
+						//如果设置为false，那么当URL中的查询串部分发生变化时就不会重新加载路由
+						//对路由嵌套和原地分页等需求非常有用。
+					})
+					.when("/about", {
+						templateUrl: "./views/about.html",
+						controller: "aboutController",
+						resolve: {
+							delay: function ($q, $timeout) {
+								//延迟两秒加载路由视图
+								var delay = $q.defer();
+								$timeout(delay.resolve, 2000);
+								console.log("delay.promise ==> ", delay.promise);
+								return delay.promise;
+							}
+						}
+					})
+					.when("/product/:name", {
+						templateUrl: "./views/product.html",
+						controller: "productController"
+					})
+					.otherwise({
+						redirectTo: "/home"
+					});
+
+					// $locationProvider.html5Mode(true);
+			}])
+			.controller("homeController", ["$scope", "$log", function ($scope, $log) {
+				this.name = "shankers:先可思";
+				this.para = 123;
+			}])
+			.controller("aboutController", ["$scope", "$log", function ($scope, $log) {
+				$scope.technology = "javascript";
+				$scope.$on("$viewContentLoaded", function () {
+					$log.log("视图内容已加载完毕");
+				})
+			}])
+			.controller("productController", ["$scope", "$routeParams", function ($scope, $routeParams) {
+				console.log($routeParams.name);
+			}])
+			.run(["$rootScope", "$log", "$location", function ($rootScope, $log, $location) {
+
+				$rootScope.$on("$routeChangeStart", function (e, next, current) {
+					// e.preventDefault(); //阻止改变路由路径
+					//e: 原始angular事件对象
+					//next: 将要导航到的下一个url
+					//current: 当前路由信息
+					$log.log("路由开始发生改变");
+					$log.log("next ==> ", next.templateUrl);
+					// console.log("next ==> ", next);
+					// console.log("current ==> ", current);
+				});
+
+				$rootScope.$on("$routeChangeSuccess", function (e, current, previous) {
+					//e: 原始angular事件对象
+					//current: 用户当前所处的路由
+					//previous: 上一个路由(如果当前是第一个路由, 则为undefined)
+					$log.log("$location.absUrl ==> ", $location.url());
+					$log.log("路由加载成功");
+				});
+
+				$rootScope.$on("$routeChangeError", function (e, current, previous, rejection) {
+					//e: 原始angular事件对象
+					//current: 当前路由信息
+					//previous: 上一个路由信息
+					//rejection: 被拒绝的promise的错误信息
+					$log.log("路由加载失败");
+				});
+
+				$rootScope.$on("$routeUpdate", function () {
+					//AngularJS在reloadOnSearch属性被设置为false的情况下，重新使用某个控制器的实例时，
+					//会广播$routeUpdate事件。
+					//当承诺被拒绝时广播
+					console.log("路由更新");
+				});
+
+			}])
+	})();
+</script>
+</body>
+</html>

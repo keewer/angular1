@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>config</title>
+</head>
+<body>
+	<div my-directive></div>
+	<script type="text/javascript" src="../js/angular/angular.js"></script>
+	<script type="text/javascript">
+		(function () {
+			angular.module("app", ["ng"])
+				.config(["$provide", "$compileProvider", function ($provide, $compileProvider) {
+					$provide.factory("myFactory", function () {
+						//配置服务
+						var service = {};
+						return service;
+					});
+
+					$compileProvider.directive("myDirective", function () {
+						//配置指令
+						return {
+							restrict: "EA",
+							template: "<button>提交</buttton>"
+						};
+					})
+
+				}]);
+		})();
+	</script>
+</body>
+</html>

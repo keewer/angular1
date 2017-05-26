@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>value</title>
+</head>
+<body>
+<div class="container" ng-controller="valueController">
+	<button ng-click="getValue();">获取值</button>
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.value("myValue", 12)
+			.controller("valueController", ["$scope", "myValue", function ($scope, myValue) {
+				$scope.getValue = function () {
+					console.log(myValue);
+				}
+			}]);
+	})();
+</script>
+</body>
+</html>
