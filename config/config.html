@@ -10,7 +10,7 @@
 	<script type="text/javascript">
 		(function () {
 			angular.module("app", ["ng"])
-				.config(["$provide", "$compileProvider", function ($provide, $compileProvider) {
+				.config(["$provide", "$compileProvider", "$httpProvider", "$cacheFactory" function ($provide, $compileProvider, $httpProvider, $cacheFactory) {
 					$provide.factory("myFactory", function () {
 						//配置服务
 						var service = {};
@@ -23,6 +23,10 @@
 							restrict: "EA",
 							template: "<button>提交</buttton>"
 						};
+					});
+
+					$httpProvider.defaults.cache = $cacheFactory("lur", {
+						capacity: 20
 					})
 
 				}]);

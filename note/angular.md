@@ -97,6 +97,8 @@
 
 - $route.reload() 重新加载路由
 
+- 默认的请求头保存在$httpProvider.defaults.headers.common对象中
+
 ```txt
 $interval(fn,delay,[count],[invokeApply],[Pass]);
 fn:一个将被反复执行的函数
@@ -144,4 +146,54 @@ compile和link选项是互斥的
 ```txt
 value()方法和constant()方法之间最主要的区别是，常量可以注入到配置函数中，而值不行。
 通常情况下，可以通过value()来注册服务对象或函数，用constant()来配置数据。
+```
+
+```txt
+novalidate: 屏蔽浏览器对表单的默认行为
+ng-required="true": 验证必填
+ng-minlength="3": 验证最小长度
+ng-maxlength="8": 验证最大长度
+ng-pattern="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/": 验证邮箱正则
+
+获取表单属性格式： formName.inputFieldName.property
+formName.inputFieldName.$pristine: 未修改为true, 未修改为false
+formName.inputFieldName.$dirty: 只要用户修改过表单, 无论输入是否通过验证, 该值都返回true
+formName.inputFieldName.$valid: 表单内容合法返回true
+formName.inputFieldName.$invalid: 表单内容不合法返回true
+formName.inputfieldName.$error.pattern: 验证正则的合法性, 验证不通过返回true, 验证通过返回false
+
+样式类
+.ng-pristine{}
+.ng-dirty {}
+.ng-valid {}
+.ng-invalid {}
+```
+
+```js
+$scope.$on("test", function(evt) {
+  $scope.a++;
+});
+$scope.$emit("test", newVal);
+```
+
+```txt
+Least Recenlty Used，最近最少使用(lru)
+```
+
+```txt
+任何时候如果我们想要为请求添加全局功能，例如身份验证、错误处理等，在请求发送给服
+务器之前或者从服务器返回时对其进行拦截，是比较好的实现手段
+interceptors 拦截器
+四种拦截器: request, responses, requestError, responseError
+
+全局处理错误
+统一进行身份验证一类的处理
+对所有发出去的请求进行预处理
+对所有收到的响应进行预处理
+做一些增强用户体验的操作，例如显示一个进度条
+
+request： 接收一个参数，它是 $http 中的标准 config 对象，同时也需要返回一个标准 config ，此时可以添加各类身份验证信息，同时也可在此启动进度条
+requestError： 当有多个 Interceptor 的时候， requestError 会在前一个 Interceptor 抛出错误或者执行 $q.reject() 时执行，接收的参数就对应的错误
+response:接受一个请求对象参数，可以不处理就直接返回，此时也可以将进度条显示为成功完成，当然，如果后端 API 返回自定义错误时，HTTP 的状态码仍然是 200 得话，便在这里处理自定义错误，也可以对返回数据做一些处理，注意要将进度条置为完成
+responseError: 这个是重头戏，即可以处理标准的 Http 错误，如服务器没有响应时，或者 PHP 之类的 CGI 经常出现的 502 一类，还可以处理 HTTP 状态码不是 200 的各类自定义错误
 ```

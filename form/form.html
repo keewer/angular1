@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+  <meta charset="UTF-8">
+  <title>ngForm</title>
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+</head>
+
+<body>
+  <div class="container" ng-controller="appController">
+    <form name="userForm" ng-submit="submitForm(userForm.$valid)" ng-cloak novalidate>
+      <div class="form-group" ng-class="{'has-error': userForm.username.$error.minlength || userForm.username.$error.maxlength || (userForm.username.$invalid && !userForm.username.$pristine)}">
+        <label for="username">username</label>
+        <input type="text" class="form-control" name="username" ng-model="username" id="username" placeholder="username" ng-required="true" ng-minlength="3" ng-maxlength="8">
+        <p class="help-block" ng-show="userForm.username.$invalid && !userForm.username.$pristine">必填</p>
+        <p class="help-block" ng-show="userForm.username.$error.minlength">长度不小于3</p>
+        <p class="help-block" ng-show="userForm.username.$error.maxlength">长度不大于8</p>
+      </div>
+      <div class="form-group" ng-class="{'has-error': userForm.useremail.$error.pattern}">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="text" class="form-control" name="useremail" ng-model="useremail" id="exampleInputEmail1" placeholder="Email" ng-pattern="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/">
+        <p class="help-block" ng-show="userForm.useremail.$error.pattern">邮箱格式不正确</p>
+      </div>
+      <div class="form-group" ng-class="{'has-error': userForm.password.$invalid && !userForm.password.$pristine}">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" name="password" ng-model="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-required="true">
+        <p class="help-block" ng-show="userForm.password.$invalid && !userForm.password.$pristine">必填</p>
+      </div>
+      <!-- <div class="form-group">
+        <label for="exampleInputFile">File input</label>
+        <input type="file" id="exampleInputFile">
+        <p class="help-block">Example block-level help text here.</p>
+      </div> -->
+      <!-- <div class="checkbox">
+        <label>
+          <input type="checkbox"> Check me out
+        </label>
+      </div> -->
+      <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-default">Submit</button>
+    </form>
+  </div>
+ <!--  <div>
+    .ng-valid { } .ng-invalid { } .ng-pristine { } .ng-dirty { } really specific css rules applied by angular .ng-invalid-required { } .ng-invalid-minlength { } .ng-valid-max-length { }
+  </div> -->
+  <script type="text/javascript" src="../js/angular/angular.js"></script>
+  <script type="text/javascript">
+  	(function () {
+  		angular.module("app", ["ng"])
+  			.controller("appController", ["$scope", function ($scope) {
+  				$scope.submitForm = function (isValid) {
+						if (isValid) alert('good');
+					};
+  			}])
+  	})();
+  </script>
+</body>
+</body>
+
+</html>

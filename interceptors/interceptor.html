@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>interceptors</title>
+</head>
+<body>
+<div class="container" ng-controller="appController">
+	<button type="button" ng-click="getD();">获取数据</button>
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.factory("myInterceptor", ["$q", function ($q) {
+				var interceptor = {
+
+					"request": function (config) {
+						console.log(config);
+						return config; //或者return $q.when(config);
+					},
+
+					"response": function (response) {
+						console.log(response);
+						return response; //后者return $q.when(response)
+					},
+
+					"requestError": function (err) {
+						return err; //或者return $q.reject(err)
+					},
+
+					"responseError": function (err) {
+						if(err.status === -1) {
+			        // 远程服务器无响应
+			      } else if(err.status === 500) {
+			        // 处理各类自定义错误
+			      } else if(err.status === 501) {
+			        // ...
+			      }
+						return err; //或者return $q.reject(err)
+					}
+	
+				};
+				return interceptor;
+				
+			}])
+			.config(["$httpProvider", function ($httpProvider) {
+				//默认： Accept: application/json, text/plain, */* 
+				// $httpProvider.defaults.headers.common["X-Requested-By"] = "text/plain";
+
+				//默认： Content-Type: application/json 
+				// $httpProvider.defaults.headers.post["X-Posted-By"] = "application/json";
+				$httpProvider.interceptors.push("myInterceptor");
+			}])
+			.controller("appController", ["$scope", "$http", function ($scope, $http) {
+					$scope.getD = function () {
+						$http({
+							method: "GET",
+							url: "./data.json"
+						}).success(function (data, status, headers, config, statusText) {
+							console.log(data);
+						}).error(function (data, status, headers, config, statusText) {
+
+						})
+					}
+			}])
+	})();
+</script>
+</body>
+</html>

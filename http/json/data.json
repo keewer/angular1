@@ -1,0 +1,6 @@
+{
+	"product": [
+		{"name": "凤凰自行车", "code": "AC001", "price": 12000},
+		{"name": "摩托车", "code": "QW123", "price": 888}
+	]
+}

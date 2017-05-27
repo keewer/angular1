@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8" />
+	<title>http</title>
+</head>
+<body>
+<div class="container" ng-controller="appController">
+	<button type="button" ng-click="getData();">获取数据</button>
+</div>
+<script type="text/javascript" src="../js/angular/angular.js"></script>
+<script type="text/javascript">
+	(function () {
+		angular.module("app", ["ng"])
+			.controller("appController", ["$scope", "$http", "$cacheFactory", function ($scope, $http, $cacheFactory) {
+				$scope.getData = function () {
+					// $http({
+					// 	method: "GET",
+					// 	url: "./json/data.json",
+					// }).success(function (data, status, headers, config, statusText) {
+					// 	console.log(status);
+					// 	console.log(data);
+					// 	console.log(headers);
+					// 	console.log(config);
+					// }).error(function (data, status, headers, config) {
+					// 	console.log(status);
+					// })
+
+					// $http({
+					// 	method: "GET",
+					// 	url: "./json/data.json", //最终的请求格式: ./json/data.json?age=20&name=keewer
+					// 	params: {
+					// 		"name": "keewer",
+					// 		"age": 20
+					// 	}
+					// }).then(function (response) {
+					// 	console.log(response);
+					// }, function (response) {
+
+					// });
+
+					//最新的20个请求会被缓存, 第21个请求会导致LRU从缓存中将时间比较老的请求移除掉
+					var lru = $cacheFactory("lru", {
+						capacity: 20
+					})
+
+					$http({
+						method: "POST",
+						url: "./json/data.json",
+						data: {"name": "keewer"},
+						cache: lru
+						// cache: true,
+						// responseType: "json"
+					}).success(function (data, status, headers, config, statusText) {
+						console.log(data);
+						console.log(config);
+					}).error(function (data, status, headers, config) {
+
+					});
+				}
+			}])
+	})();
+</script>
+</body>
+</html>
