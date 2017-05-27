@@ -197,3 +197,50 @@ requestError： 当有多个 Interceptor 的时候， requestError 会在前一�
 response:接受一个请求对象参数，可以不处理就直接返回，此时也可以将进度条显示为成功完成，当然，如果后端 API 返回自定义错误时，HTTP 的状态码仍然是 200 得话，便在这里处理自定义错误，也可以对返回数据做一些处理，注意要将进度条置为完成
 responseError: 这个是重头戏，即可以处理标准的 Http 错误，如服务器没有响应时，或者 PHP 之类的 CGI 经常出现的 502 一类，还可以处理 HTTP 状态码不是 200 的各类自定义错误
 ```
+
+```txt
+interceptors 拦截器案例
+http://www.tuicool.com/articles/eMZBN3
+
+进度条
+NProgress
+NgProgress (NProgress for AngularJS)
+rc-progress
+progress-full-width
+progress-svg
+
+提示框：
+toastr
+ngToast (toast for AngularJS)
+angular-toast
+k-toast
+notie
+ng-notie
+corner-notie
+```
+
+```txt
+默认情况下，末尾斜杠（可以引起后端服务器不期望出现的行为）将从计算后的URL中剥离
+这个可以通过$resourceProvider配置：
+app.config(["$resourceProvider",function($resourceProvider){
+	$resourceProvider.defaults.stripTrailingSlashes = false;
+}])
+
+$resource(url,[paramDefaults],[actions],options);
+url: 一个参数化的url模板
+paramDefaults: url参数的默认值
+actions:用户对于resource行为的默认设置进行扩展的自定义配置的散列，该配置将会以$http.config的格式创建
+	action : 字符串，action的名称，这个名称将成为resource对象方法的名称
+	method ：字符串，http方法（不区分大小写，如GET, POST, PUT, DELETE, JSONP等）
+	params ：对象，这次行动预先设定的参数。如果任何参数的值是一个函数，当一个参数值每一次需要获得请求时都会被执行（除非该参数被忽略的）
+	url ：字符串，行为指定的网址。
+	isArray ：boolean，如果为true，那么这个行为返回的对象是个数组。
+	transformRequest ：函数/函数的数组。转换函数或者一个包含转换函数的数组。转换函数获取http请求体和请求头，并且返回他们的转换版（通常是序列化）
+	transformResponse ：函数/函数的数组。转换函数或者一个包含转换函数的数组。转换函数获取http响应体和响应头，并且返回他们的转换版（通常是序列化）
+	cache ：boolean，如果为true，一个默认的$http缓存将被作为请求的缓存，否则如果存在一个用$cacheFactory创建的缓存实例，则将用于缓存
+	timeout ：数值，毫秒，超时则让请求中止
+	withCredentials ：boolean，是否设置withcredentials flag的XHR对象, 查看更多信息的凭据
+	responseType ：字符串，响应头类型
+	interceptor ：对象，拦截对象有两个可选方法-response和responseError
+options: 扩展$resourceProvider行为的自定义设置，唯一支持的选项是stripTrailingSlashes,boolean类型，如果为真，url尾部的斜杠会被移除（默认为true）
+```

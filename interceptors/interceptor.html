@@ -16,12 +16,12 @@
 				var interceptor = {
 
 					"request": function (config) {
-						console.log(config);
+						console.log("config ==> ", config);
 						return config; //或者return $q.when(config);
 					},
 
 					"response": function (response) {
-						console.log(response);
+						console.log("response ==> ", response);
 						return response; //后者return $q.when(response)
 					},
 
